@@ -1,7 +1,7 @@
 import {
 	Controller, Get, Body, Post, Param,
 	ParseIntPipe, UsePipes, UseGuards, UseInterceptors,
-	UploadedFiles
+	UploadedFiles, Inject
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import {
@@ -13,7 +13,6 @@ import {
 	ApiConsumes,
 	ApiBody,
 } from '@nestjs/swagger';
-import { diskStorage } from 'multer';
 
 import { Roles } from '../common/decorators/roles.decorator';
 import { JoiValidationPipe } from '../common/pipes/validation.pipe';
@@ -26,21 +25,7 @@ import { CreateCat } from './dto/cat.dto';
 import { CatsService } from './cats.service';
 
 import { UploadFile } from './dto/file.dto';
-
-const filesConfigs = {
-	storage: diskStorage({
-		destination(request, file, cb) {
-			cb(null, 'public');
-		},
-		filename(request, file, cb) {
-			const parts = file.mimetype.split('/');
-			const extension = parts[parts.length - 1];
-			const randomName = Date.now();
-
-			cb(null, `${randomName}.${extension}`);
-		},
-	}),
-};
+import configs from '../common/modules/configs/config';
 
 @ApiTags('cats')
 @Roles('user', 'admin', 'superadmin')
@@ -61,8 +46,9 @@ export class CatsController {
 		description: 'Cat picture',
 		type: UploadFile,
 	})
-	@UseInterceptors(FilesInterceptor('cat_pic', 2, filesConfigs))
+	@UseInterceptors(FilesInterceptor('cat_pic', 2, { storage: configs.catsStorage }))
 	async postFile(@UploadedFiles() files): Promise<string> {
+		console.log(files)
 		return 'OK';
 	}
 
