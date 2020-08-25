@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { GitHubStrategy } from './strategies/github.strategy';
 import { AuthController } from './auth.controller';
 import { jwtConstants } from './constants';
 
@@ -18,7 +19,7 @@ import { jwtConstants } from './constants';
       signOptions: { expiresIn: '60m' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, GitHubStrategy],
   controllers: [AuthController]
 })
 export class AuthModule {}

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { MetaInterface } from '../interfaces/meta.interface';
+import { MetaInterface } from '../../auth/interfaces/meta.interface';
 
 interface UserRequest extends Request {
   user: MetaInterface;
