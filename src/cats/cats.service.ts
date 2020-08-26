@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 
 import { Cat } from './entities/cat.entity';
 import { CreateCat } from './dto/cat.dto';

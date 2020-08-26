@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, Inject } from '@nestjs/common';
 
 import { providers } from '../../common/constants';
+import { GitHubInterface } from '../interfaces/login.interface';
 
 @Injectable()
 export class GitHubStrategy extends PassportStrategy(Strategy) {
@@ -13,9 +14,8 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(accessToken, refreshToken, profile) {
+  validate(accessToken, refreshToken, profile): GitHubInterface {
     return {
-      id: profile.id,
       username: profile.username,
     };
   }

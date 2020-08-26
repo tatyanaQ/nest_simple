@@ -2,8 +2,9 @@ import { Controller, Post, UseGuards, Get } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { Meta } from '../common/decorators/meta.decorator';
-import { MetaInterface } from './interfaces/meta.interface'
+import { UserMeta } from '../common/decorators/user_meta.decorator';
+import { LocalInterface } from './interfaces/login.interface';
+import { GitHubInterface } from './interfaces/login.interface';
 import { LocalGuard } from './guards/local.guard';
 import { GitHubGuard } from './guards/github.guard';
 import { IToken } from './interfaces/token.interface';
@@ -17,8 +18,8 @@ export class AuthController {
 
   @UseGuards(LocalGuard)
   @Post('login')
-  async login(@Meta() meta: MetaInterface): Promise<IToken> {
-    return this.authService.login(meta);
+  async login(@UserMeta() user: LocalInterface): Promise<IToken> {
+    return this.authService.login(user);
   }
 
   @UseGuards(GitHubGuard)
@@ -29,7 +30,7 @@ export class AuthController {
 
   @UseGuards(GitHubGuard)
   @Get('github/callback')
-  async gitHubCallback(@Meta() meta: MetaInterface): Promise<IToken> {
+  async gitHubCallback(@UserMeta() meta: GitHubInterface): Promise<IToken> {
     let user = await this.usersService.findOne(meta.username);
 
     if (!user) {

@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 
 import { MetaInterface } from '../interfaces/meta.interface';
 import { JwtPayload } from '../interfaces/jwtPayload.interface';
-import { roles } from '../../common/constants';
 import { jwtConstants } from '../constants';
 
 @Injectable()
@@ -20,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       id: payload.id,
       username: payload.username,
-      role: roles.admin,
+      role: payload.role,
     };
   }
 }

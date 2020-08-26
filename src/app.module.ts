@@ -4,6 +4,7 @@ import { Connection } from 'typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import 'reflect-metadata';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
