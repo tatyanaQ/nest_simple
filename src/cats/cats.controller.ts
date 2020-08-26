@@ -1,18 +1,10 @@
 import {
-	Controller, Get, Body, Post, Param,
-	ParseIntPipe, UsePipes, UseGuards, UseInterceptors,
-	UploadedFiles, Inject
+	Controller, Get, Body, Post, Param, ParseIntPipe, UsePipes, UseGuards, UseInterceptors, UploadedFiles,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiUnauthorizedResponse,
-	ApiTags,
-	ApiOkResponse,
-	ApiConsumes,
-	ApiBody,
+  ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse, ApiTags, ApiOkResponse, ApiConsumes, ApiBody,
 } from '@nestjs/swagger';
+import { FilesInterceptor } from '@nestjs/platform-express';
 
 import { Roles } from '../common/decorators/roles.decorator';
 import { JoiValidationPipe } from '../common/pipes/validation.pipe';
@@ -47,9 +39,8 @@ export class CatsController {
 		type: UploadFile,
 	})
 	@UseInterceptors(FilesInterceptor('cat_pic', 2, { storage: configs.catsStorage }))
-	async postFile(@UploadedFiles() files): Promise<string> {
-		console.log(files)
-		return 'OK';
+	async postFile(@UploadedFiles() files: Express.Multer.File[]): Promise<any[]> {
+		return files;
 	}
 
 	@Get()

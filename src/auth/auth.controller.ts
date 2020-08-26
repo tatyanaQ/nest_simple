@@ -1,4 +1,7 @@
 import { Controller, Post, UseGuards, Get } from '@nestjs/common';
+import {
+  ApiOperation, ApiTags, ApiCreatedResponse, ApiBody,
+} from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
@@ -8,7 +11,9 @@ import { GitHubInterface } from './interfaces/login.interface';
 import { LocalGuard } from './guards/local.guard';
 import { GitHubGuard } from './guards/github.guard';
 import { IToken } from './interfaces/token.interface';
+import { PlainCredentials } from './dto/plain_credentials.dto';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -16,8 +21,14 @@ export class AuthController {
     private usersService: UsersService
   ) {}
 
-  @UseGuards(LocalGuard)
   @Post('login')
+  @ApiOperation({ summary: 'Plain login' })
+  @ApiBody({
+		description: 'User\'s credentials',
+		type: PlainCredentials,
+  })
+  @ApiCreatedResponse({ description: 'App access token', type: IToken })
+  @UseGuards(LocalGuard)
   async login(@UserMeta() user: LocalInterface): Promise<IToken> {
     return this.authService.login(user);
   }
