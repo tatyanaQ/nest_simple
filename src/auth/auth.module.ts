@@ -8,15 +8,15 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { GitHubStrategy } from './strategies/github.strategy';
 import { AuthController } from './auth.controller';
-import { jwtConstants } from './constants';
+import configs from '../common/modules/configs/config';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60m' },
+      secret: configs.JWT_SECRET,
+      signOptions: { expiresIn: configs.JWT_EXPIRES },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, GitHubStrategy],
