@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as helmet from 'helmet';
+import * as bodyParser from 'body-parser';
 
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/exception';
@@ -13,6 +14,8 @@ async function bootstrap() {
 
   app.use(helmet());
   app.enableCors();
+
+  app.use(bodyParser.json());
 
   app.use(logger);
   app.useGlobalFilters(new HttpExceptionFilter());

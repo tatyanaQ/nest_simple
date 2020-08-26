@@ -1,5 +1,5 @@
 import {
-	Controller, Get, Body, Post, Param, ParseIntPipe, UsePipes, UseGuards, UseInterceptors, UploadedFiles,
+	Controller, Get, Body, Post, Param, ParseIntPipe, UseGuards, UseInterceptors, UploadedFiles,
 } from '@nestjs/common';
 import {
   ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse, ApiTags, ApiOkResponse, ApiConsumes, ApiBody,
@@ -27,8 +27,7 @@ export class CatsController {
 
 	@Post()
 	@ApiOperation({ summary: 'Create cat' })
-	@UsePipes(new JoiValidationPipe(postSchema))
-	async create(@Body() createCatDto: CreateCat): Promise<ICat> {
+	async create(@Body(new JoiValidationPipe(postSchema)) createCatDto: CreateCat): Promise<ICat> {
 		return this.catsService.create(createCatDto);
 	}
 

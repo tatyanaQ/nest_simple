@@ -1,17 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
-import { UtilsModule } from '../common/modules/utils/utils.module';
+import { Cat } from './entities/cat.entity';
 
 describe('Cats Controller', () => {
   let catsController: CatsController;
   let catsService: CatsService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UtilsModule],
       controllers: [CatsController],
-      providers: [CatsService],
+      providers: [{
+        provide: CatsService,
+        useValue: {
+          async findAll() {},
+          async create() {},
+          async findOne() {},
+        },
+      }],
     }).compile();
 
     catsController = module.get<CatsController>(CatsController);
@@ -23,9 +30,9 @@ describe('Cats Controller', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of cats', async () => {
-      const result = [];
-      jest.spyOn(catsService, 'findAll').mockImplementation(() => result);
+    it('Should return an array of all cats', async () => {
+      const result: Cat[] = [];
+      jest.spyOn(catsService, 'findAll').mockImplementation(async () => result);
 
       expect(await catsController.findAll()).toBe(result);
     });
