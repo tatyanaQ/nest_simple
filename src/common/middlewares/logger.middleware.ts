@@ -8,7 +8,7 @@ interface UserRequest extends Request {
 
 export function logger(req: UserRequest, res: Response, next: Function) {
   console.log(`${req.method} ${req.url}`);
-  if (req.body) console.log(req.body);
+  if (Object.keys(req.body).length) console.log(req.body);
 
   next();
 }

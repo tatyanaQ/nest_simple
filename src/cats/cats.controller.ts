@@ -1,5 +1,5 @@
 import {
-	Controller, Get, Body, Post, Param, ParseIntPipe, UseGuards, UseInterceptors, UploadedFiles,
+	Controller, Get, Body, Post, Param, ParseIntPipe, UseGuards, UseInterceptors, UploadedFiles, NotFoundException,
 } from '@nestjs/common';
 import {
   ApiBearerAuth, ApiOperation, ApiUnauthorizedResponse, ApiTags, ApiOkResponse, ApiConsumes, ApiBody,
@@ -54,7 +54,10 @@ export class CatsController {
 
 	@Get(':id')
 	@ApiOkResponse({ description: 'Get all cats', type: [ICat] })
-	findOne(@Param('id', ParseIntPipe) id: number): Promise<ICat> {
-		return this.catsService.findOne(id);
+	async findOne(@Param('id', ParseIntPipe) id: number): Promise<ICat> {
+		const cat = await this.catsService.findOne(id);
+		if (!cat) throw new NotFoundException();
+
+		return cat;
 	}
 }
